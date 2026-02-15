@@ -14,7 +14,9 @@ const App = () => {
     confirmPassword: "",
   });
 
-  const validateFormInput = (event) => {};
+  const validateFormInput = (event) => {
+    event.preventDefault();
+  };
 
   return (
     <div className="container">
