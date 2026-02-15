@@ -1,4 +1,4 @@
-# Validation Form
+# Form Validation
 
 A robust, controlled-component form built with **React**. This project demonstrates clean state management and real-time validation logic for user authentication flows.
 
@@ -32,7 +32,7 @@ Ensure you have [Node.js](https://nodejs.org/) installed.
 ### 2. Clone the Repository
 
 ```bash
-git clone [https://github.com/avicious/password-validation](https://github.com/avicious/password-validation)
+git clone https://github.com/avicious/password-validation
 cd password-validation
 ```
 
