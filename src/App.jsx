@@ -5,142 +5,113 @@ const App = () => {
     email: "",
     password: "",
     confirmPassword: "",
-    successMsg: "",
   });
 
-  const [formError, setFormError] = useState({
-    email: "",
-    password: "",
-    confirmPassword: "",
-  });
+  const [formError, setFormError] = useState({});
+  const [successMsg, setSuccessMsg] = useState("");
 
   const handleUserInput = (name, value) => {
-    setFormInput({
-      ...formInput,
-      [name]: value,
-    });
+    setFormError((prev) => ({ ...prev, [name]: "" }));
+    setFormInput((prev) => ({ ...prev, [name]: value }));
   };
 
   const validateFormInput = (event) => {
     event.preventDefault();
+    let errors = {};
 
-    let inputError = {
-      email: "",
-      password: "",
-      confirmPassword: "",
-    };
-
-    if (!formInput.email && !formInput.password) {
-      setFormError({
-        ...inputError,
-        email: "Enter a valid email address",
-        password: "Password should not be empty",
-      });
-      return;
+    // Email Validation
+    if (!formInput.email.trim()) {
+      errors.email = "Enter a valid email address";
+    } else if (!/\S+@\S+\.\S+/.test(formInput.email)) {
+      errors.email = "Email format is invalid";
     }
 
-    if (!formInput.email) {
-      setFormError({
-        ...inputError,
-        email: "Enter a valid email address",
-      });
-      setFormInput((prevState) => ({
-        ...prevState,
-        successMsg: "",
-      }));
-      return;
-    }
-
+    // Password Validation
     if (!formInput.password) {
-      setFormError({
-        ...inputError,
-        password: "Password should not be empty",
-      });
-      setFormInput((prevState) => ({
-        ...prevState,
-        successMsg: "",
-      }));
-      return;
+      errors.password = "Password should not be empty";
+    } else if (formInput.password.length < 6) {
+      errors.password = "Password must be at least 6 characters";
     }
 
+    // Confirm Password Validation
     if (formInput.password !== formInput.confirmPassword) {
-      setFormError({
-        ...inputError,
-        confirmPassword: "Password and confirm password should be the same",
-      });
-      setFormInput((prevState) => ({
-        ...prevState,
-        successMsg: "",
-      }));
-      return;
+      errors.confirmPassword = "Passwords do not match";
     }
 
-    setFormError(inputError);
-    setFormInput((prevState) => ({
-      ...prevState,
-      successMsg: "Validation Successful",
-    }));
+    setFormError(errors);
+
+    if (Object.keys(errors).length === 0) {
+      setSuccessMsg("Validation Successful!");
+    } else {
+      setSuccessMsg("");
+    }
   };
 
   return (
     <div className="container">
       <div className="card">
         <div className="card-header">
-          <h1 className="title">Form</h1>
+          <h1 className="title">Sign Up</h1>
         </div>
 
         <div className="card-body">
-          <form onSubmit={validateFormInput}>
-            <label className="label" htmlFor="email">
-              Email
-            </label>
-            <input
-              type="text"
-              value={formInput.email}
-              onChange={({ target }) => {
-                handleUserInput(target.name, target.value);
-              }}
-              name="email"
-              id="email"
-              className="input"
-              placeholder="Enter Email"
-            />
-            <p className="error-message">{formError.email}</p>
+          <form onSubmit={validateFormInput} noValidate>
+            <div className="form-group">
+              <label className="label">Email</label>
+              <input
+                type="email"
+                name="email"
+                value={formInput.email}
+                onChange={({ target }) =>
+                  handleUserInput(target.name, target.value)
+                }
+                className={`input ${formError.email ? "input-error" : ""}`}
+                placeholder="Enter Email"
+              />
+              {formError.email && (
+                <p className="error-message">{formError.email}</p>
+              )}
+            </div>
 
-            <label className="label" htmlFor="password">
-              Password
-            </label>
-            <input
-              type="password"
-              value={formInput.password}
-              onChange={({ target }) => {
-                handleUserInput(target.name, target.value);
-              }}
-              name="password"
-              id="password"
-              className="input"
-              placeholder="Enter Password"
-            />
-            <p className="error-message">{formError.password}</p>
+            <div className="form-group">
+              <label className="label">Password</label>
+              <input
+                type="password"
+                name="password"
+                value={formInput.password}
+                onChange={({ target }) =>
+                  handleUserInput(target.name, target.value)
+                }
+                className={`input ${formError.password ? "input-error" : ""}`}
+                placeholder="Enter Password"
+              />
+              {formError.password && (
+                <p className="error-message">{formError.password}</p>
+              )}
+            </div>
 
-            <label className="label" htmlFor="confirm-password">
-              Confirm Password
-            </label>
-            <input
-              type="text"
-              value={formInput.confirmPassword}
-              onChange={({ target }) => {
-                handleUserInput(target.name, target.value);
-              }}
-              name="confirmPassword"
-              id="confirm-password"
-              className="input"
-              placeholder="Confirm Password"
-            />
-            <p className="error-message">{formError.confirmPassword}</p>
-            <p className="success-message">{formInput.successMsg}</p>
+            <div className="form-group">
+              <label className="label">Confirm Password</label>
+              <input
+                type="password"
+                name="confirmPassword"
+                value={formInput.confirmPassword}
+                onChange={({ target }) =>
+                  handleUserInput(target.name, target.value)
+                }
+                className={`input ${formError.confirmPassword ? "input-error" : ""}`}
+                placeholder="Confirm Password"
+              />
+              {formError.confirmPassword && (
+                <p className="error-message">{formError.confirmPassword}</p>
+              )}
+            </div>
 
-            <input type="submit" className="btn" value="Submit" />
+            {successMsg && <p className="success-message">{successMsg}</p>}
+
+            <button type="submit" className="btn">
+              Submit
+            </button>
           </form>
         </div>
       </div>
