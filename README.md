@@ -2,6 +2,10 @@
 
 A robust, controlled-component form built with **React**. This project demonstrates clean state management and real-time validation logic for user authentication flows.
 
+## Live Demo
+
+**Check out the live version of this project here:** [avicious.github.io/password-validation/](https://avicious.github.io/password-validation/)
+
 ## Features
 
 - **State-Driven Validation:** Logic-based checks for email format, password presence, and character length.
